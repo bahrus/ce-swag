@@ -49,7 +49,13 @@ export async function handleRequest(request: Request): Promise<Response> {
        <form>
         ${ceInfo.fields.map(field => html`
           <label>
-            ${field.name}
+            <details>
+              <summary>${field.name}</summary>
+              <dfn>${field.description!}</dfn>
+              ${field.inheritedFrom ? html`
+                <code data-inherited-from="${field.inheritedFrom.name}">${JSON.stringify(field.inheritedFrom)}</code>
+              `: html``}
+            </details>
             ${renderField(field)}
           </label>
         `).join('')}
