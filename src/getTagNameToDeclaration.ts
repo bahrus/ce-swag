@@ -1,9 +1,10 @@
 import { Declaration, CustomElementDeclaration, CustomElement, Package, ClassDeclaration, ClassField, ClassMethod } from '../node_modules/custom-elements-manifest/schema.d.js';
 import {countTypes} from './countTypes';
 import {getUnevaluatedNonStaticPublicFieldsFromDeclaration} from './getUnevaluatedNonStaticPublicFieldsFromDeclaration';
+import { FlattenedCustomElementDeclaration } from './types.js';
 
 export function getTagNameToDeclaration(fetchResult: any){
-    const tagNameToDeclaration: {[key: string]: CustomElementDeclaration} = {};
+    const tagNameToDeclaration: {[key: string]: FlattenedCustomElementDeclaration} = {};
     const pack = fetchResult as Package;
     if(pack === undefined) return;
     const mods = pack.modules;
@@ -15,7 +16,7 @@ export function getTagNameToDeclaration(fetchResult: any){
         const tagDeclarations = declarations.filter(x => (x as CustomElement).tagName !== undefined);
         
         for(const declaration of tagDeclarations){
-            const ce = declaration as CustomElementDeclaration;
+            const ce = declaration as FlattenedCustomElementDeclaration;
             
             const tagName = (declaration as CustomElement).tagName!;
             
@@ -28,8 +29,9 @@ export function getTagNameToDeclaration(fetchResult: any){
             }else{
                 tagNameToDeclaration[tagName] = ce;
             }
-            (<any>ce).unevaluatedNonStaticPublicFields = getUnevaluatedNonStaticPublicFieldsFromDeclaration(ce);
-            (<any>ce).methods = getMethodsFromDeclaration(ce);
+            ce.unevaluatedNonStaticPublicFields = getUnevaluatedNonStaticPublicFieldsFromDeclaration(ce);
+            ce.methods = getMethodsFromDeclaration(ce);
+            ce.path = mod.path;
         }
   
     }

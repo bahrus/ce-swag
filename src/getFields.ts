@@ -1,9 +1,7 @@
 import { Declaration, CustomElementDeclaration, CustomElement, Package, ClassDeclaration, ClassField, ClassMethod } from '../node_modules/custom-elements-manifest/schema.d.js';
 import {getUnevaluatedNonStaticPublicFieldsFromDeclaration} from './getUnevaluatedNonStaticPublicFieldsFromDeclaration';
+import { EnhancedClassField } from './types.js';
 
-export interface EnhancedClassField extends ClassField{
-  val: any;
-}
 
 export function getFields(tagNameToDeclaration:  {[key: string]: CustomElementDeclaration}, tag: string){
     const ce = tagNameToDeclaration[tag!] as CustomElementDeclaration;

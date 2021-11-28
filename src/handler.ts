@@ -44,6 +44,7 @@ export async function handleRequest(request: Request): Promise<Response> {
     const json = await resp.json();
     const processed = getTagNameToDeclaration(json)!;
     const ce = processed.tagNameToDeclaration[tagName];
+    
     const ceInfo =  getFields(processed.tagNameToDeclaration, tagName)!;
     return new Response(html`
        <form>
